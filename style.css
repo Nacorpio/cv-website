@@ -14,8 +14,21 @@
 
   --color-accent: #0b5cc2;
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 80%, black);
+  --color-on-accent: #ffffff;          /* text on an accent-colored button */
+  --color-border: color-mix(in srgb, var(--color-accent) 30%, var(--color-surface));  /* soft border */
   --color-accent-alt-dark: #9aa8c4;
   --color-accent-alt-light: #cccccc;
+
+  /* Gradients built from the theme colors, so dark mode gets them for free */
+  --gradient-card: linear-gradient(180deg,
+      var(--color-surface),
+      color-mix(in srgb, var(--color-surface) 94%, var(--color-accent)));
+  --gradient-chip: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)),
+      color-mix(in srgb, var(--color-accent) 20%, var(--color-surface)));
+  --gradient-chip-hover: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-accent) 16%, var(--color-surface)),
+      color-mix(in srgb, var(--color-accent) 32%, var(--color-surface)));
 
   --font-main: Arial, sans-serif;
   --font-body: "Segoe UI", Arial, sans-serif;
@@ -35,6 +48,7 @@
 
   --color-accent: #8db4ff;
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 75%, white);
+  --color-on-accent: #10203f;
   --color-accent-alt-dark: #5a6b92;
 }
 
@@ -47,6 +61,10 @@
 
 body {
   margin: 0;
+}
+
+main.container {
+  margin-top: calc(var(--space) * 4);
 }
 
 /* 3. Base styles */
@@ -74,7 +92,7 @@ img {
 /* 5. Components (TODO: style one section at a time) */
 header {
   background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-border);
   text-align: center;
 }
 
@@ -95,8 +113,8 @@ h2 {
 }
 
 section.block {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-accent);
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: calc(var(--space) * 2) 0;
@@ -124,15 +142,15 @@ section h3 {
 }
 
 .skill-group li {
-  background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+  background: var(--gradient-chip);
   border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
   border-radius: 999px;                  /* fully rounded ends = pill */
   padding: 0.25rem 0.9rem;
-  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .skill-group li:hover {
-  background-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-surface));
+  background: var(--gradient-chip-hover);
   border-color: var(--color-accent);
   transform: translateY(-2px);           /* small lift */
 }
@@ -165,6 +183,63 @@ nav a {
   text-decoration: none;
 }
 
+/* Hero: the first thing visitors see */
+.hero {
+  text-align: center;
+}
+
+.hero .container {
+  padding-bottom: calc(var(--space) * 4);
+  padding-top: calc(var(--space) * 6);
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 3rem);   /* scales with the screen, within limits */
+  margin: 0 0 var(--space);
+}
+
+.hero-tagline {
+  font-size: 1.15rem;
+  margin: 0 0 var(--space);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: calc(var(--space) * 3);
+}
+
+/* Buttons (links styled as buttons) */
+.button {
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  color: var(--color-on-accent);
+  padding: 0.6rem 1.4rem;
+  text-decoration: none;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-on-accent);
+  text-decoration: none;
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--color-accent);
+}
+
+.button-secondary:hover,
+.button-secondary:focus-visible {
+  background: var(--color-surface);
+  color: var(--color-accent-hover);
+}
+
 /* Theme toggle button */
 #theme-toggle {
   background: transparent;
@@ -184,7 +259,7 @@ nav a {
 
 footer {
   background-color: var(--color-surface);
-  border-top: 1px solid var(--color-accent);
+  border-top: 1px solid var(--color-border);
   text-align: center;
 }
 
