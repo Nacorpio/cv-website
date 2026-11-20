@@ -6,13 +6,15 @@
 
 /* 1. Variables - change the look of the whole site here */
 :root {
-  --color-bg: #565e79;
-  --color-surface: #f4f4f4;
-  --color-surface-alt: #f2f2f2;
-  --color-text: #222222;
+  /* Light theme (default): light slate blue */
+  --color-bg: #cfd8ea;
+  --color-surface: #f1f4fa;
+  --color-surface-alt: #e4eaf5;
+  --color-text: #1e2433;
 
-  --color-accent: #0066cc;
-  --color-accent-alt-dark: #a6a6a6;
+  --color-accent: #0b5cc2;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent) 80%, black);
+  --color-accent-alt-dark: #9aa8c4;
   --color-accent-alt-light: #cccccc;
 
   --font-main: Arial, sans-serif;
@@ -23,11 +25,18 @@
   --radius: 5px;
 }
 
-/* OPTIONAL dark mode: override the variables, e.g.
-@media (prefers-color-scheme: dark) {
-  :root { --color-bg: #1f212d; --color-text: #e0e0e0; }
+/* Dark theme: the same variables with darker slate-blue values.
+   It applies when script.js sets data-theme="dark" on <html>. */
+:root[data-theme="dark"] {
+  --color-bg: #1b2438;
+  --color-surface: #28344f;
+  --color-surface-alt: #324264;
+  --color-text: #e6ebf5;
+
+  --color-accent: #8db4ff;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent) 75%, white);
+  --color-accent-alt-dark: #5a6b92;
 }
-*/
 
 /* 2. Reset */
 *,
@@ -131,12 +140,29 @@ a:hover,
 a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 0.25em;         /* gap between text and line */
-  color: color-mix(in srgb, var(--color-accent) 80%, black);
+  color: var(--color-accent-hover);
 }
 
 /* Nav links: no underline at rest; hover/focus rule above brings it back */
 nav a {
   text-decoration: none;
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  background: transparent;
+  border: 1px solid var(--color-accent-alt-dark);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: var(--space);
+}
+
+#theme-toggle:hover,
+#theme-toggle:focus-visible {
+  border-color: var(--color-accent);
 }
 
 footer {
@@ -148,6 +174,16 @@ footer {
 /* 6. Responsive - mobile first: the styles above are for small screens,
       add larger-screen rules here */
 @media (min-width: 768px) {
+  nav {
+    align-items: center;
+    display: flex;               /* nav links and the theme button in one row */
+    gap: 1rem;
+  }
+
+  nav ul {
+    flex: 1;                     /* the link list takes all the free space */
+  }
+
   section.block {
     padding: calc(var(--space) * 4);   /* larger screens: roomier */
   }
