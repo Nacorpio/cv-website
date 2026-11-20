@@ -45,7 +45,7 @@
 /* Dark theme: the same variables with darker slate-blue values.
    It applies when script.js sets data-theme="dark" on <html>. */
 :root[data-theme="dark"] {
-  --color-bg: #111827;
+  --color-bg: #0b111e;
   --color-surface: #1b2438;
   --color-surface-alt: #243049;
   --color-text: #e6ebf5;
@@ -356,14 +356,25 @@ section h3 {
   transform: translateY(-2px);
 }
 
-/* A paragraph that introduces a pill list: sits close to the pills below it */
-.list-intro {
-  margin-bottom: 0;
+/* Interests: caption and pills in one tinted panel with an accent bar, like the lead paragraph */
+.interests {
+  background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius);
+  margin: calc(var(--space) * 4) 0;       /* the same generous room above and below */
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2) calc(var(--space) * 2);
 }
 
-/* ...and the pills get extra room before whatever follows them */
-.list-intro + .chip-list {
-  margin-bottom: calc(var(--space) * 4);
+.interests-label {
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  margin: 0 0 var(--space);
+}
+
+.interests .chip-list {
+  margin: 0;                             /* the panel's padding does the spacing */
 }
 
 /* About Me: a larger lead line and a quick-facts row */
@@ -417,12 +428,16 @@ section h3 {
   width: 1.1em;
 }
 
-.skill-group .chip-list li {
+.skill-group .chip-list li,
+.interests .chip-list li {
   align-items: center;                   /* icon and text on one line */
   display: flex;
+  gap: 0.5rem;
+}
+
+.skill-group .chip-list li {
   font-family: var(--font-mono);
   font-size: 0.9em;                      /* mono letters are wider, so slightly smaller */
-  gap: 0.5rem;
 }
 
 /* Link chips (contact): the whole pill is the link */
@@ -462,7 +477,13 @@ section h3 {
 .reveal {
   opacity: 0;
   transform: translateY(1.5rem);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* The section you are reading gets a very soft accent glow */
+section.block.is-current {
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 24px color-mix(in srgb, var(--color-accent) 16%, transparent);
 }
 
 .reveal.is-visible {

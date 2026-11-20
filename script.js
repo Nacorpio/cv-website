@@ -34,6 +34,11 @@ const navLinks = document.querySelectorAll(".nav-list a");
 let atBottom = false;                       // true while the footer is visible
 
 function setActive(id) {
+  // The section itself gets a soft glow (see .is-current in style.css).
+  document.querySelectorAll("main section.block").forEach(section => {
+    section.classList.toggle("is-current", section.id === id);
+  });
+
   navLinks.forEach(link => {
     if (link.getAttribute("href") === "#" + id) {
       link.setAttribute("aria-current", "location");   // CSS styles this attribute
