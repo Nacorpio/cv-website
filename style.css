@@ -440,6 +440,103 @@ section h3 {
   font-size: 0.9em;                      /* mono letters are wider, so slightly smaller */
 }
 
+/* Timeline (Education). Each entry is one <li>: a date and a card. The line and the dot are
+   drawn per entry by CSS (::before = line segment, ::after = dot), so a new entry needs no CSS.
+   Phone: line on the left, date above the card. From 768px: date column, line, card. */
+.timeline {
+  --dot: 0.8rem;
+  --dot-top: 0.4rem;                     /* distance from the top of the entry to the dot */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.timeline-entry {
+  padding: 0 0 calc(var(--space) * 3) calc(var(--space) * 4);   /* room on the left for line and dot */
+  position: relative;
+}
+
+.timeline-entry:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-entry::before {                /* the line: from this dot down to the next entry */
+  background: var(--color-border);
+  bottom: 0;
+  content: "";
+  left: calc(var(--dot) / 2 - 1px);
+  position: absolute;
+  top: var(--dot-top);
+  width: 2px;
+}
+
+.timeline-entry:last-child::before {
+  display: none;                         /* nothing below the last entry */
+}
+
+.timeline-entry::after {                 /* the dot: a ring for finished entries */
+  background: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  content: "";
+  height: var(--dot);
+  left: 0;
+  position: absolute;
+  top: var(--dot-top);
+  width: var(--dot);
+}
+
+.timeline-now::after {                   /* the entry in progress: filled and glowing */
+  animation: timeline-pulse 2.5s ease-out infinite;
+  background: var(--color-accent);
+}
+
+@keyframes timeline-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 0.6rem transparent;
+  }
+}
+
+.timeline-date {
+  margin: 0 0 var(--space);
+}
+
+.timeline .card {
+  margin-top: 0;                         /* the entry's padding does the spacing */
+}
+
+@media (min-width: 768px) {
+  .timeline {
+    --dot-top: 1.15rem;                  /* level with the card title */
+    --gutter: 10rem;                     /* width of the date column */
+  }
+
+  .timeline-entry {
+    column-gap: calc(var(--space) * 6);
+    display: grid;
+    grid-template-columns: var(--gutter) 1fr;
+    padding-left: 0;
+  }
+
+  .timeline-entry::before {
+    left: calc(var(--gutter) + var(--space) * 3 - 1px);   /* in the middle of the gap */
+  }
+
+  .timeline-entry::after {
+    left: calc(var(--gutter) + var(--space) * 3 - var(--dot) / 2);
+  }
+
+  .timeline-date {
+    margin: 0;
+    padding-top: calc(var(--space) * 2);   /* level with the card title */
+    text-align: right;
+  }
+}
+
 /* Link chips (contact): the whole pill is the link */
 .chip-list .chip-link {
   padding: 0;                            /* the link inside carries the padding */
@@ -492,6 +589,10 @@ section.block.is-current {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .timeline-now::after {
+    animation: none;
+  }
+
   .reveal {                              /* no movement: sections are simply there */
     opacity: 1;
     transform: none;

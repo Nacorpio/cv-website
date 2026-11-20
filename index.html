@@ -174,38 +174,109 @@
           <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-postman"></use></svg>Postman</li>
         </ul>
       </section>
+
+      <section class="skill-group">
+        <h3><svg class="group-icon" aria-hidden="true"><use href="#icon-palette"></use></svg>Graphic design &amp; 3D</h3>
+        <ul class="chip-list">
+          <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-palette"></use></svg>Cinema 4D</li>
+          <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-palette"></use></svg>Adobe Photoshop</li>
+          <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-palette"></use></svg>Adobe Illustrator</li>
+        </ul>
+      </section>
+
+      <section class="skill-group">
+        <h3><svg class="group-icon" aria-hidden="true"><use href="#icon-music"></use></svg>Music production</h3>
+        <ul class="chip-list">
+          <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-music"></use></svg>Ableton Live</li>
+          <li><svg class="skill-icon" aria-hidden="true"><use href="#icon-music"></use></svg>FL Studio</li>
+        </ul>
+      </section>
     </section>
 
     <!-- ===== EDUCATION ===== -->
     <section class="block" id="education">
       <h2>Education</h2>
-      <div class="education-entry card">
-        <h3>NTI-gymnasiet</h3>
-        <p class="entry-meta">2015 - 2018</p>
-        <p>Programming, network administration and computer technology.</p>
-      </div>
-      <div class="education-entry card">
-        <h3>Lexicon</h3>
-        <p class="entry-meta">
-          <time datetime="2026-10">Oct 2026</time> - <time datetime="2027-07">Jul 2027</time>
-          <span class="badge">In progress</span>
-        </p>
-        <p>Full-stack software development with a focus on AI. A 37-week Full Stack C#&nbsp;.NET Web Development
-          programme that ends with a 14-week internship (APL) at a company.</p>
-        <ul class="chip-list">
-          <li>C# &amp; .NET</li>
-          <li>HTML, CSS &amp; JavaScript</li>
-          <li>React</li>
-          <li>SQL &amp; databases</li>
-          <li>Entity Framework Core</li>
-          <li>ASP.NET Core Web API &amp; MVC</li>
-          <li>Identity &amp; security</li>
-          <li>Azure fundamentals (AZ-900)</li>
-          <li>AI &amp; Python</li>
-        </ul>
-      </div>
+      <!-- To add an entry: copy one <li class="timeline-entry"> block, paste it below the last one and
+           edit the words. The line and the dot are drawn by CSS. Add the class "timeline-now" to the
+           entry that is in progress (it gets the glowing dot). -->
+      <ol class="timeline">
+        <li class="timeline-entry">
+          <p class="entry-meta timeline-date">
+            <time datetime="2020">2020</time> - <time datetime="2021">2021</time>
+          </p>
+          <div class="education-entry card">
+            <h3>NTI-gymnasiet</h3>
+            <p>Programming, network administration and computer technology.</p>
+            <ul class="chip-list">
+              <li>Programmering 1 &amp; 2</li>
+              <li>Nätverkssäkerhet</li>
+              <li>Nätverksadministration</li>
+              <li>Nätverksteknik</li>
+              <li>Datorteknik 1B</li>
+            </ul>
+          </div>
+        </li>
+        <li class="timeline-entry timeline-now">
+          <p class="entry-meta timeline-date">
+            <time datetime="2026-10">Oct 2026</time> - <time datetime="2027-07">Jul 2027</time>
+            <span class="badge">In progress</span>
+          </p>
+          <div class="education-entry card">
+            <h3>Lexicon</h3>
+            <p>Full-stack software development with a focus on AI. A 37-week Full Stack C#&nbsp;.NET Web Development
+              programme that ends with a 14-week internship (APL) at a company.</p>
+            <ul class="chip-list">
+              <li>C# &amp; .NET</li>
+              <li>HTML, CSS &amp; JavaScript</li>
+              <li>React</li>
+              <li>SQL &amp; databases</li>
+              <li>Entity Framework Core</li>
+              <li>ASP.NET Core Web API &amp; MVC</li>
+              <li>Identity &amp; security</li>
+              <li>Azure fundamentals (AZ-900)</li>
+              <li>AI &amp; Python</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
     </section>
 
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section class="block" id="experience">
+      <h2>Internships</h2>
+      <!-- Same copy-paste pattern as Education: copy one <li class="timeline-entry"> and edit the words. -->
+      <ol class="timeline">
+        <li class="timeline-entry">
+          <p class="entry-meta timeline-date"><time datetime="2016">2016</time></p>
+          <div class="education-entry card">
+            <h3>Tarsier Studios</h3>
+            <p>Internship at a game studio in Malmö. I helped develop internal tools in .NET and C++, shadowed a senior
+              engineer and learned how the studio planned its projects.</p>
+            <ul class="chip-list">
+              <li>.NET</li>
+              <li>C++</li>
+              <li>Internal tools</li>
+              <li>Project planning</li>
+            </ul>
+          </div>
+        </li>
+        <li class="timeline-entry">
+          <p class="entry-meta timeline-date"><time datetime="2024">2024</time></p>
+          <div class="education-entry card">
+            <h3>IT-center</h3>
+            <p>Internship at the IT department of a village in Smedjebacken. I learned how hundreds of devices
+              registered on the network were managed, and I restored old school laptops by wiping them and
+              reinstalling.</p>
+            <ul class="chip-list">
+              <li>Device management</li>
+              <li>Networks</li>
+              <li>Laptop restoration</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
 
     <!-- ===== PROJECTS ===== -->
     <section class="block" id="projects">
@@ -222,6 +293,8 @@
           </p>
           <p>A single-player zombie survival mod for Grand Theft Auto V with more than 300K downloads, and YouTube
             videos showcasing gameplay in various scenarios and languages.</p>
+          <p>Built in C# with ScriptHookVDotNet: custom game systems, enemy AI, an inventory and UI. I owned the whole
+            lifecycle alone and kept updating it from community feedback. Rated "Top Rated" on GTA5-Mods.</p>
           <ul class="chip-list">
             <li class="chip-link">
               <a href="https://www.gta5-mods.com/scripts/grand-theft-zombies" target="_blank" rel="noopener noreferrer" aria-label="Grand Theft Zombies on GTA5-Mods.com">
