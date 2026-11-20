@@ -138,9 +138,9 @@ nav {
 }
 
 .nav-list {
-  display: flex;
+  display: grid;                         /* phone: 3 + 2 slices in even rows (see the 768px query) */
   flex: 1;                               /* the slices take the free space */
-  flex-wrap: wrap;
+  grid-template-columns: repeat(6, 1fr); /* 6 columns: the top row uses 2 each, the bottom row 3 each */
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -148,9 +148,15 @@ nav {
 
 .nav-list li {
   border-left: 1px solid var(--color-border);
-  flex: 1 1 auto;                        /* slices share the bar and grow to fill it */
+  grid-column: span 2;                   /* phone: three slices in the top row */
 }
 
+.nav-list li:nth-child(n + 4) {
+  border-top: 1px solid var(--color-border);
+  grid-column: span 3;                   /* phone: two wider slices in the bottom row */
+}
+
+.nav-list li:nth-child(3),
 .nav-list li:last-child {
   border-right: 1px solid var(--color-border);
 }
@@ -158,8 +164,9 @@ nav {
 .nav-list a {
   color: var(--color-text);
   display: block;                        /* the whole slice is clickable */
-  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  padding: calc(var(--space) * 1.5) var(--space);   /* phone: tighter sides */
   position: relative;                    /* anchor for the ::after effect layer */
+  text-align: center;
   text-decoration: none;
   transition: color 0.25s;
 }
@@ -338,6 +345,43 @@ section h3 {
   letter-spacing: 0.05em;
   margin-right: 0.35em;
   text-transform: uppercase;
+}
+
+/* Skill icons. The sprite at the top of <body> is hidden; each icon is drawn with
+   <use href="#icon-name">. currentColor lets CSS recolour the icons per theme. */
+.icon-sprite {
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+.skill-group h3 {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.group-icon,
+.skill-icon {
+  color: var(--color-accent);
+  flex: none;
+  fill: currentColor;                    /* brand icons are filled shapes */
+}
+
+.group-icon {
+  height: 1.2em;
+  width: 1.2em;
+}
+
+.skill-icon {
+  height: 1.1em;
+  width: 1.1em;
+}
+
+.skill-group .chip-list li {
+  align-items: center;                   /* icon and text on one line */
+  display: flex;
+  gap: 0.5rem;
 }
 
 /* Link chips (contact): the whole pill is the link */
@@ -590,5 +634,43 @@ footer {
 @media (min-width: 768px) {
   section.block {
     padding: calc(var(--space) * 4);   /* larger screens: roomier */
+  }
+
+  /* Wide screens: one row of five slices that share the width */
+  .nav-list {
+    display: flex;
+  }
+
+  .nav-list li,
+  .nav-list li:nth-child(n + 4) {
+    border-top: 0;
+    flex: 1 1 auto;
+  }
+
+  .nav-list li:nth-child(3) {
+    border-right: 0;                     /* the next slice already draws its left border */
+  }
+
+  .nav-list li:last-child {
+    border-right: 1px solid var(--color-border);
+  }
+
+  .nav-list a {
+    padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  }
+}
+
+/* Very narrow phones (320px): slightly smaller nav text so every label fits its slice */
+@media (max-width: 359px) {
+  .nav-list a {
+    font-size: 0.85rem;
+    padding-inline: calc(var(--space) / 2);
+  }
+}
+
+/* Smooth scrolling for nav clicks, unless the visitor asked for less motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
