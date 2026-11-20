@@ -53,10 +53,6 @@ img {
   height: auto;
 }
 
-a {
-  color: var(--color-accent);
-}
-
 /* 4. Layout */
 /* One rule for the centered column: used inside header and footer,
    and on <main> itself. The bars stay full width, the content does not. */
@@ -126,9 +122,9 @@ section h3 {
   border-radius: var(--radius);
 }
 
+/* Links: default underline stays (not only color), so links are recognizable */
 a {
   color: var(--color-accent);
-  text-decoration: none;                 /* no underline at rest */
 }
 
 a:hover,
@@ -138,8 +134,10 @@ a:focus-visible {
   color: color-mix(in srgb, var(--color-accent) 80%, black);
 }
 
-nav a { text-decoration: none; }
-nav a:hover, nav a:focus-visible { text-decoration: underline; }
+/* Nav links: no underline at rest; hover/focus rule above brings it back */
+nav a {
+  text-decoration: none;
+}
 
 footer {
   background-color: var(--color-surface);
