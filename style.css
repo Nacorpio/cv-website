@@ -1,0 +1,156 @@
+/* ==========================================================
+   CV website styles
+   Plan: 1) variables  2) reset  3) base  4) layout
+         5) components  6) responsive (mobile first)
+   ========================================================== */
+
+/* 1. Variables - change the look of the whole site here */
+:root {
+  --color-bg: #565e79;
+  --color-surface: #f4f4f4;
+  --color-surface-alt: #f2f2f2;
+  --color-text: #222222;
+
+  --color-accent: #0066cc;
+  --color-accent-alt-dark: #a6a6a6;
+  --color-accent-alt-light: #cccccc;
+
+  --font-main: Arial, sans-serif;
+  --font-body: "Segoe UI", Arial, sans-serif;
+
+  --space: 0.5rem;
+  --max-width: 800px;
+  --radius: 5px;
+}
+
+/* OPTIONAL dark mode: override the variables, e.g.
+@media (prefers-color-scheme: dark) {
+  :root { --color-bg: #1f212d; --color-text: #e0e0e0; }
+}
+*/
+
+/* 2. Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* 3. Base styles */
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+/* 4. Layout */
+header,
+footer {
+  padding: var(--space) max(var(--space), calc((100% - var(--max-width)) / 2));
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: calc(var(--space) * 2);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;                      /* centers the 800px column */
+  padding: var(--space) calc(var(--space) * 2);
+}
+
+/* 5. Components (TODO: style one section at a time) */
+header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-accent);
+  text-align: center;
+}
+
+header li {
+  margin-bottom: var(--space);
+  list-style-type: none;
+}
+
+header ul {
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2 {
+  margin-top: var(--space);
+  margin-bottom: var(--space);
+}
+
+section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  margin: calc(var(--space) * 2) 0;
+  padding: 32px;
+}
+
+section.block {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+section p {
+  margin-top: 0;
+}
+
+section h3 {
+  margin-top: var(--space);
+  margin-bottom: 0;
+}
+
+.skill-group ul {
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  padding: var(--space) calc(var(--space) * 2);
+  margin-top: var(--space);
+  margin-bottom: var(--space);
+  flex-wrap: wrap;
+  gap: var(--space);
+  border: 1px solid var(--color-accent-alt-dark);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius);
+}
+
+section.skill-group li {
+  padding: var(--space);
+  border-radius: var(--radius);
+}
+
+footer {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-accent);
+  padding: var(--space);
+  text-align: center;
+}
+
+/* 6. Responsive - mobile first: the styles above are for small screens,
+      add larger-screen rules here */
+@media (min-width: 768px) {
+  header ul {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0.5rem 1rem;
+  }
+}
