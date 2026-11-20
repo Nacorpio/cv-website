@@ -15,8 +15,8 @@
        Your name, your title, a short tagline. Optional: photo, navigation links. -->
   <header id="top">
     <div class="container">
-      <nav>
-        <ul>
+      <nav aria-label="Main navigation">
+        <ul class="nav-list">
           <li><a href="#about">About Me</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#education">Education</a></li>
@@ -47,7 +47,15 @@
     <!-- ===== ABOUT ME ===== -->
     <section class="block" id="about">
       <h2>About Me</h2>
-      <p>
+
+      <!-- Quick facts: the essentials at a glance -->
+      <ul class="chip-list facts">
+        <li><span class="fact-label">Focus</span> Full-stack development</li>
+        <li><span class="fact-label">Main stack</span> C# / .NET</li>
+        <li><span class="fact-label">Status</span> Looking for new opportunities</li>
+      </ul>
+
+      <p class="lead">
         My name is Gustav Jeppsson and I am a self-taught programmer with experience in both front-end and back-end
         software development.
         I enjoy building interactive and user-friendly solutions and continuously learning new technologies
@@ -59,9 +67,14 @@
         community.
       </p>
       <p>
-        Since I was just a child, I have been partaking in various creative activities and projects such as programming,
-        graphic design, and music production.
+        Since I was just a child, I have been partaking in various creative activities and projects:
       </p>
+      <ul class="chip-list">
+        <li>Programming</li>
+        <li>Graphic design</li>
+        <li>Music production</li>
+        <li>AI</li>
+      </ul>
       <p>
         I have spent a significant amount of time learning about AI technologies and their applications in software
         development, and I am eager to leverage this knowledge in my projects.
@@ -113,14 +126,14 @@
     <!-- ===== EDUCATION ===== -->
     <section class="block" id="education">
       <h2>Education</h2>
-      <div class="education-entry">
+      <div class="education-entry card">
         <h3>NTI-gymnasiet</h3>
-        <p>2015 - 2018</p>
+        <p class="entry-meta">2015 - 2018</p>
         <p>Programming, network administration and computer technology.</p>
       </div>
-      <div class="education-entry">
+      <div class="education-entry card">
         <h3>Lexicon</h3>
-        <p>2026 - 2027</p>
+        <p class="entry-meta">2026 - 2027</p>
         <p>Full-stack software development with a focus on AI.</p>
       </div>
     </section>
@@ -129,12 +142,12 @@
     <!-- ===== PROJECTS ===== -->
     <section class="block" id="projects">
       <h2>Projects</h2>
-      <div class="project-entry">
+      <div class="project-entry card">
         <h3>Grand Theft Zombies</h3>
         <p>A single-player zombie survival mod for Grand Theft Auto V with more than 300K downloads, and YouTube
           videos showcasing gameplay in various scenarios and languages.</p>
       </div>
-      <div class="project-entry">
+      <div class="project-entry card">
         <h3>Inventory Management System</h3>
         <p>A C# console application for managing inventory, built as a course project.</p>
         <ul class="chip-list">
@@ -148,7 +161,7 @@
           </li>
         </ul>
       </div>
-      <div class="project-entry">
+      <div class="project-entry card">
         <h3>Product List Management System</h3>
         <p>A C# console application for managing a product list, built as a course project.</p>
         <ul class="chip-list">

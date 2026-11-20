@@ -92,19 +92,69 @@ img {
 
 /* 5. Components (TODO: style one section at a time) */
 header {
-  background-color: var(--color-surface);
+  background: var(--gradient-card);
   border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-header li {
-  margin-bottom: var(--space);
-  list-style-type: none;
+/* Nav: full-height "slices" of the header, split by thin vertical dividers */
+header .container {
+  padding-bottom: 0;                     /* let the slices reach the edges of the bar */
+  padding-top: 0;
 }
 
-header ul {
-  padding: 0;
+nav {
+  display: flex;
+  gap: 1rem;
+}
+
+#theme-toggle {
+  align-self: center;                    /* the button stays centered, not stretched */
+}
+
+.nav-list {
+  display: flex;
+  flex: 1;                               /* the slices take the free space */
+  flex-wrap: wrap;
+  list-style-type: none;
   margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  border-left: 1px solid var(--color-border);
+  flex: 1 1 auto;                        /* slices share the bar and grow to fill it */
+}
+
+.nav-list li:last-child {
+  border-right: 1px solid var(--color-border);
+}
+
+.nav-list a {
+  color: var(--color-text);
+  display: block;                        /* the whole slice is clickable */
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  text-decoration: none;
+}
+
+/* Hover/focus: light shining up from below. A glow centered on the bottom edge
+   fades out towards the top, and a thin bright line marks where it comes from. */
+.nav-list a:hover,
+.nav-list a:focus-visible {
+  background: radial-gradient(
+    ellipse 90% 120% at 50% 100%,
+    color-mix(in srgb, var(--color-accent) 40%, transparent),
+    transparent 75%
+  );
+  box-shadow: inset 0 -3px 0 var(--color-accent);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.nav-list a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;                  /* keep the focus ring inside the slice */
 }
 
 h1,
@@ -138,8 +188,17 @@ section h3 {
   gap: var(--space);
   justify-content: flex-start;
   list-style-type: none;
-  margin: var(--space) 0;
+  margin: var(--space) 0 calc(var(--space) * 2);   /* more room below the pills */
   padding: 0;
+}
+
+/* Skill groups: more room between groups, with a divider after all but the last */
+.skill-group {
+  margin-top: calc(var(--space) * 3);
+}
+
+.skill-group:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
 }
 
 .chip-list li {
@@ -157,8 +216,8 @@ section h3 {
   transform: translateY(-2px);           /* small lift */
 }
 
-/* Project cards: same gradient, border and hover as the chips */
-.project-entry {
+/* Cards (projects, education): same gradient, border and hover as the chips */
+.card {
   background: var(--gradient-chip);
   border: 1px solid var(--color-chip-border);
   border-radius: var(--radius);
@@ -167,25 +226,47 @@ section h3 {
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.project-entry h3 {
+.card h3 {
   margin-top: var(--space);
 }
 
-.project-entry p {
+.card p {
   margin-bottom: 0;
 }
 
-.project-entry .chip-list {
+.card .entry-meta,
+.entry-meta {
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  font-size: 0.9em;
+  margin-bottom: var(--space);
+}
+
+.card .chip-list {
   margin-bottom: 0;
   margin-top: calc(var(--space) * 1.5);
 }
 
 /* Only cards that contain a link react to hover, so the effect stays honest */
-.project-entry:has(a):hover,
-.project-entry:has(a):focus-within {
+.card:has(a):hover,
+.card:has(a):focus-within {
   background: var(--gradient-chip-hover);
   border-color: var(--color-accent);
   transform: translateY(-2px);
+}
+
+/* About Me: a larger lead line and a quick-facts row */
+.lead {
+  border-left: 4px solid var(--color-accent);
+  font-size: 1.15rem;
+  padding-left: 1rem;
+}
+
+.fact-label {
+  color: color-mix(in srgb, var(--color-text) 65%, transparent);
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  margin-right: 0.35em;
+  text-transform: uppercase;
 }
 
 /* Link chips (contact): the whole pill is the link */
@@ -222,12 +303,12 @@ section h3 {
 /* Respect visitors who turn animations off in their system settings */
 @media (prefers-reduced-motion: reduce) {
   .chip-list li,
-  .project-entry {
+  .card {
     transition: none;
   }
 
-  .project-entry:has(a):hover,
-  .project-entry:has(a):focus-within {
+  .card:has(a):hover,
+  .card:has(a):focus-within {
     transform: none;
   }
 
@@ -247,11 +328,6 @@ a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 0.25em;         /* gap between text and line */
   color: var(--color-accent-hover);
-}
-
-/* Nav links: no underline at rest; hover/focus rule above brings it back */
-nav a {
-  text-decoration: none;
 }
 
 /* Hero: the first thing visitors see */
@@ -337,23 +413,7 @@ footer {
 /* 6. Responsive - mobile first: the styles above are for small screens,
       add larger-screen rules here */
 @media (min-width: 768px) {
-  nav {
-    align-items: center;
-    display: flex;               /* nav links and the theme button in one row */
-    gap: 1rem;
-  }
-
-  nav ul {
-    flex: 1;                     /* the link list takes all the free space */
-  }
-
   section.block {
     padding: calc(var(--space) * 4);   /* larger screens: roomier */
-  }
-
-  header ul {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 0.5rem 1rem;
   }
 }
