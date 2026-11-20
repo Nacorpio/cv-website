@@ -32,8 +32,10 @@
       color-mix(in srgb, var(--color-accent) 32%, var(--color-surface)));
 
   --font-main: Arial, sans-serif;
+  --font-heading: "Space Grotesk", Arial, sans-serif;   /* falls back to Arial if the font can't load */
   --font-body: "Segoe UI", Arial, sans-serif;
 
+  --color-available: #2f9e5b;              /* the green status dot */
   --space: 0.5rem;
   --max-width: 800px;
   --radius: 5px;
@@ -42,15 +44,16 @@
 /* Dark theme: the same variables with darker slate-blue values.
    It applies when script.js sets data-theme="dark" on <html>. */
 :root[data-theme="dark"] {
-  --color-bg: #1b2438;
-  --color-surface: #28344f;
-  --color-surface-alt: #324264;
+  --color-bg: #111827;
+  --color-surface: #1b2438;
+  --color-surface-alt: #243049;
   --color-text: #e6ebf5;
 
   --color-accent: #8db4ff;
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 75%, white);
   --color-on-accent: #10203f;
-  --color-accent-alt-dark: #5a6b92;
+  --color-accent-alt-dark: #44527a;
+  --color-available: #4ade80;
 }
 
 /* 2. Reset */
@@ -71,9 +74,22 @@ main.container {
 /* 3. Base styles */
 body {
   font-family: var(--font-main);
-  background-color: var(--color-bg);
+  background-color: var(--color-bg);           /* fallback behind the layers below */
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--color-text) 14%, transparent) 1px, transparent 1px),   /* dot grid */
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 50%),     /* glow, top left */
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 50%), /* glow, bottom right */
+    linear-gradient(180deg, var(--color-bg), color-mix(in srgb, var(--color-bg) 85%, black));                       /* fade */
+  background-size: 24px 24px, auto, auto, auto;  /* one size per layer, in the same order */
+  background-attachment: fixed;                /* the background stays put while the page scrolls */
   color: var(--color-text);
   line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
 }
 
 img {
@@ -95,7 +111,15 @@ header {
   background: var(--gradient-card);
   border-bottom: 1px solid var(--color-border);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;                      /* stays at the top while the page scrolls */
   text-align: center;
+  top: 0;
+  z-index: 10;                           /* above the cards and the glow layers */
+}
+
+/* Anchor jumps stop below the sticky header (7rem covers the taller phone nav) */
+section[id] {
+  scroll-margin-top: 7rem;
 }
 
 /* Nav: full-height "slices" of the header, split by thin vertical dividers */
@@ -135,21 +159,42 @@ nav {
   color: var(--color-text);
   display: block;                        /* the whole slice is clickable */
   padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  position: relative;                    /* anchor for the ::after effect layer */
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+/* The hover effect lives on its own layer (::after) that sits invisible on top of
+   the slice. Browsers can't animate between gradients or shadows on the link
+   itself, but they can animate the opacity of a layer. */
+.nav-list a::after {
+  background: radial-gradient(
+    ellipse 90% 120% at 50% 100%,
+    color-mix(in srgb, var(--color-accent) 18%, transparent),
+    transparent 70%
+  );
+  box-shadow:
+    inset 0 -2px 0 color-mix(in srgb, var(--color-accent) 60%, transparent),   /* light source line */
+    inset 0 3px 6px rgba(0, 0, 0, 0.2);                                         /* pressed-in shadow */
+  content: "";
+  inset: 0;                              /* cover the whole slice */
+  opacity: 0;
+  pointer-events: none;                  /* clicks go through to the link */
+  position: absolute;
+  transition: opacity 0.25s ease;
+}
+
+.nav-list a:hover,
+.nav-list a:focus-visible,
+.nav-list a[aria-current] {              /* script.js marks the section you are reading */
+  color: var(--color-accent);
   text-decoration: none;
 }
 
-/* Hover/focus: light shining up from below. A glow centered on the bottom edge
-   fades out towards the top, and a thin bright line marks where it comes from. */
-.nav-list a:hover,
-.nav-list a:focus-visible {
-  background: radial-gradient(
-    ellipse 90% 120% at 50% 100%,
-    color-mix(in srgb, var(--color-accent) 40%, transparent),
-    transparent 75%
-  );
-  box-shadow: inset 0 -3px 0 var(--color-accent);
-  color: var(--color-accent);
-  text-decoration: none;
+.nav-list a:hover::after,
+.nav-list a:focus-visible::after,
+.nav-list a[aria-current]::after {
+  opacity: 1;
 }
 
 .nav-list a:focus-visible {
@@ -163,11 +208,23 @@ h2 {
   margin-bottom: var(--space);
 }
 
-section.block {
+/* More room between a section heading and what follows it */
+section.block h2 {
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: calc(var(--space) * 2);
+  padding-bottom: var(--space);
+}
+
+/* The card look, shared by the sections and the hero panel */
+section.block,
+.hero-panel {
   background: var(--gradient-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+section.block {
   margin: calc(var(--space) * 2) 0;
   padding: calc(var(--space) * 2);     /* phone: compact */
 }
@@ -254,7 +311,21 @@ section h3 {
   transform: translateY(-2px);
 }
 
+/* A paragraph that introduces a pill list: sits close to the pills below it */
+.list-intro {
+  margin-bottom: 0;
+}
+
+/* ...and the pills get extra room before whatever follows them */
+.list-intro + .chip-list {
+  margin-bottom: calc(var(--space) * 4);
+}
+
 /* About Me: a larger lead line and a quick-facts row */
+.facts {
+  margin-bottom: calc(var(--space) * 4);   /* extra room before the lead paragraph */
+}
+
 .lead {
   border-left: 4px solid var(--color-accent);
   font-size: 1.15rem;
@@ -301,10 +372,38 @@ section h3 {
 }
 
 /* Respect visitors who turn animations off in their system settings */
+/* Fade-in on scroll: script.js adds .reveal to each section, then .is-visible
+   when it comes into view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .reveal {                              /* no movement: sections are simply there */
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .nav-list a,
+  .nav-list a::after,
+  .button,
+  .button::after,
   .chip-list li,
   .card {
     transition: none;
+  }
+
+  .button:hover,
+  .button:focus-visible {
+    transform: none;
   }
 
   .card:has(a):hover,
@@ -336,18 +435,56 @@ a:focus-visible {
 }
 
 .hero .container {
-  padding-bottom: calc(var(--space) * 4);
-  padding-top: calc(var(--space) * 6);
+  padding-bottom: calc(var(--space) * 2);
+  padding-top: calc(var(--space) * 4);
 }
 
+.hero-panel {
+  padding: calc(var(--space) * 4) calc(var(--space) * 2);
+}
+
+/* The name: gradient text. The gradient is painted on the background and
+   clipped to the letters; the text itself is made transparent. */
 .hero h1 {
+  background: linear-gradient(90deg, var(--color-text), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;                 /* the gradient spans the name, not the whole row */
   font-size: clamp(2rem, 6vw, 3rem);   /* scales with the screen, within limits */
+  font-weight: 700;                      /* the heavier of the two loaded weights */
+  letter-spacing: -0.02em;
   margin: 0 0 var(--space);
 }
 
 .hero-tagline {
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
   font-size: 1.15rem;
-  margin: 0 0 var(--space);
+  font-weight: 400;
+  margin: 0 0 calc(var(--space) * 2);
+}
+
+/* "Looking for..." as a small status pill with a green dot */
+.status-pill {
+  align-items: center;
+  background: var(--gradient-chip);
+  border: 1px solid var(--color-chip-border);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.25rem 0.9rem;
+  text-align: left;                      /* if the text wraps, it stays next to the dot */
+}
+
+.status-dot {
+  background: var(--color-available);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--color-available);   /* soft glow around the dot */
+  flex: none;                            /* never squeezed when the text wraps */
+  height: 0.6rem;
+  margin-right: 0.25rem;                 /* on top of the pill's 0.5rem gap */
+  width: 0.6rem;
 }
 
 .hero-actions {
@@ -360,30 +497,68 @@ a:focus-visible {
 
 /* Buttons (links styled as buttons) */
 .button {
-  background: var(--color-accent);
+  --glow: rgba(255, 255, 255, 0.35);     /* colour of the light under the button */
+  align-items: center;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-accent) 85%, white), var(--color-accent));
   border: 1px solid var(--color-accent);
   border-radius: var(--radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--color-on-accent);
+  display: inline-flex;                  /* icon and text on one line */
+  gap: 0.5rem;
+  overflow: hidden;                      /* keeps the glow layer inside the rounded corners */
   padding: 0.6rem 1.4rem;
+  position: relative;                    /* anchor for the ::after glow layer */
   text-decoration: none;
+  transition: border-color 0.25s, box-shadow 0.25s, color 0.25s, transform 0.25s;   /* every changing property fades */
+}
+
+.button svg {
+  flex: none;
+  height: 1.1em;
+  width: 1.1em;
+}
+
+/* Same trick as the nav: the glow and inset shadow sit on an invisible layer
+   whose opacity fades in on hover/focus. */
+.button::after {
+  background: radial-gradient(ellipse 90% 120% at 50% 100%, var(--glow), transparent 70%);
+  box-shadow: inset 0 -2px 0 var(--glow), inset 0 3px 6px rgba(0, 0, 0, 0.2);
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.25s ease;
 }
 
 .button:hover,
 .button:focus-visible {
-  background: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-accent) 45%, transparent);
   color: var(--color-on-accent);
   text-decoration: none;
+  transform: translateY(-2px);           /* lift, like the pills */
+}
+
+.button:hover::after,
+.button:focus-visible::after {
+  opacity: 1;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 .button-secondary {
-  background: transparent;
+  --glow: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  background: var(--gradient-chip);
   color: var(--color-accent);
 }
 
 .button-secondary:hover,
 .button-secondary:focus-visible {
-  background: var(--color-surface);
   color: var(--color-accent-hover);
 }
 

@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gustav Jeppsson - CV</title>
   <meta name="description" content="Gustav Jeppsson's CV showcasing skills, education, and projects.">
+  <!-- Heading font: Space Grotesk from Google Fonts (bold only) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -31,12 +35,27 @@
   <!-- ===== HERO / INTRODUCTION ===== -->
   <section class="hero">
     <div class="container">
-      <h1>Gustav Jeppsson</h1>
-      <p class="hero-tagline">Self-taught programmer specializing in front-end and back-end development</p>
-      <p>Looking for new full-stack opportunities.</p>
-      <div class="hero-actions">
-        <a class="button" href="#contact">Contact me</a>
-        <a class="button button-secondary" href="files/gustav-jeppsson-cv.pdf" download>Download CV</a>
+      <div class="hero-panel">
+        <h1>Gustav Jeppsson</h1>
+        <p class="hero-tagline">Self-taught programmer specializing in front-end and back-end development</p>
+        <p class="status-pill"><span class="status-dot" aria-hidden="true"></span>Looking for new full-stack opportunities</p>
+        <div class="hero-actions">
+          <a class="button" href="#contact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Contact me
+          </a>
+          <a class="button button-secondary" href="files/gustav-jeppsson-cv.pdf" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
       </div>
       <!-- OPTIONAL: profile photo (needs a file in images/ and a descriptive alt text) -->
     </div>
@@ -66,7 +85,7 @@
         I am constantly seeking opportunities to collaborate on innovative projects and contribute to the tech
         community.
       </p>
-      <p>
+      <p class="list-intro">
         Since I was just a child, I have been partaking in various creative activities and projects:
       </p>
       <ul class="chip-list">
@@ -144,8 +163,21 @@
       <h2>Projects</h2>
       <div class="project-entry card">
         <h3>Grand Theft Zombies</h3>
+        <p class="entry-meta"><time datetime="2015-05-21">May 21, 2015</time></p>
         <p>A single-player zombie survival mod for Grand Theft Auto V with more than 300K downloads, and YouTube
           videos showcasing gameplay in various scenarios and languages.</p>
+        <ul class="chip-list">
+          <li class="chip-link">
+            <a href="https://www.gta5-mods.com/scripts/grand-theft-zombies" target="_blank" rel="noopener noreferrer" aria-label="Grand Theft Zombies on GTA5-Mods.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              View on GTA5-Mods
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="project-entry card">
         <h3>Inventory Management System</h3>
