@@ -34,6 +34,7 @@ const navLinks = document.querySelectorAll(".nav-list a");
 let atBottom = false;                       // true while the footer is visible
 
 function setActive(id) {
+  root.dataset.section = id || "hero";      // CSS tints the background glows by section
   // The section itself gets a soft glow (see .is-current in style.css).
   document.querySelectorAll("main section.block").forEach(section => {
     section.classList.toggle("is-current", section.id === id);
@@ -85,3 +86,19 @@ document.querySelectorAll("main section.block").forEach(section => {
   section.classList.add("reveal");
   revealObserver.observe(section);
 });
+
+// 3. Parallax dots: the dot grid moves at 30% of the scroll speed.
+// The grid repeats every 24px, so the offset can wrap with % and never jumps.
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let ticking = false;
+
+function updateDots() {
+  root.style.setProperty("--dots-y", String((window.scrollY * 0.3) % 24));
+  ticking = false;
+}
+
+window.addEventListener("scroll", () => {
+  if (reduceMotion.matches || ticking) return;
+  ticking = true;
+  requestAnimationFrame(updateDots);        // at most once per frame
+}, { passive: true });

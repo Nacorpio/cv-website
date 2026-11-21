@@ -12,7 +12,7 @@
   --color-surface-alt: #e4eaf5;
   --color-text: #1e2433;
 
-  --color-accent: #0b5cc2;
+  --color-accent: #512bd4;             /* the official .NET purple */
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 80%, black);
   --color-chip-border: color-mix(in srgb, var(--color-accent) 35%, transparent);
   --color-on-accent: #ffffff;          /* text on an accent-colored button */
@@ -36,6 +36,12 @@
   --font-heading: "Space Grotesk", Arial, sans-serif;   /* falls back to Arial if the font can't load */
   --font-body: "Segoe UI", Arial, sans-serif;
 
+  /* Syntax colours for the hero's C# snippet (like an editor theme) */
+  --code-keyword: #512bd4;
+  --code-type: #0b7a75;
+  --code-string: #a3482a;
+  --glow-blue: #1f6fd6;
+
   --color-available: #2f9e5b;              /* the green status dot */
   --space: 0.5rem;
   --max-width: 800px;
@@ -50,9 +56,13 @@
   --color-surface-alt: #243049;
   --color-text: #e6ebf5;
 
-  --color-accent: #8db4ff;
+  --color-accent: #b9a6ff;
   --color-accent-hover: color-mix(in srgb, var(--color-accent) 75%, white);
-  --color-on-accent: #10203f;
+  --color-on-accent: #1b0f4a;
+  --code-keyword: #b9a6ff;
+  --code-type: #4ec9b0;
+  --code-string: #ce9178;
+  --glow-blue: #5b9dff;
   --color-accent-alt-dark: #44527a;
   --color-available: #4ade80;
 }
@@ -76,16 +86,48 @@ main.container {
 body {
   font-family: var(--font-main);
   background-color: var(--color-bg);           /* fallback behind the layers below */
-  background-image:
-    radial-gradient(color-mix(in srgb, var(--color-text) 14%, transparent) 1px, transparent 1px),   /* dot grid */
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 50%),     /* glow, top left */
-    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 50%), /* glow, bottom right */
-    linear-gradient(180deg, var(--color-bg), color-mix(in srgb, var(--color-bg) 85%, black));                       /* fade */
-  background-size: 24px 24px, auto, auto, auto;  /* one size per layer, in the same order */
+  background-image: linear-gradient(180deg, var(--color-bg), color-mix(in srgb, var(--color-bg) 85%, black));   /* fade */
   background-attachment: fixed;                /* the background stays put while the page scrolls */
   color: var(--color-text);
   line-height: 1.5;
 }
+
+/* Animated background: two fixed layers behind the content (z-index: -1).
+   ::before = dot grid that drifts slower than the page (parallax), ::after = corner glows
+   whose colour follows the current section. */
+@property --glow-tint {
+  syntax: "<color>";                           /* a registered type, so the browser can fade it */
+  inherits: false;
+  initial-value: transparent;
+}
+
+body::before,
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
+}
+
+body::before {
+  inset: -24px 0;                              /* one tile of spare room so the loop never shows a gap */
+  background-image: radial-gradient(color-mix(in srgb, var(--color-text) 14%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  transform: translateY(calc(var(--dots-y, 0) * -1px));   /* script.js sets --dots-y (0-24) while scrolling */
+}
+
+body::after {
+  --glow-tint: var(--color-accent);
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--glow-tint) 16%, transparent), transparent 50%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--glow-tint) 16%, transparent), transparent 50%);
+  transition: --glow-tint 1.2s ease;
+}
+
+:root[data-section="skills"] body::after { --glow-tint: var(--code-type); }
+:root[data-section="projects"] body::after { --glow-tint: var(--glow-blue); }
+:root[data-section="contact"] body::after { --glow-tint: var(--code-string); }
 
 h1,
 h2,
@@ -505,6 +547,13 @@ section h3 {
   margin: 0 0 var(--space);
 }
 
+/* The badge sits on its own line under the dates, with room above it */
+.timeline-date .badge {
+  display: flex;
+  margin: calc(var(--space) * 0.75) 0 0;
+  width: fit-content;
+}
+
 .timeline .card {
   margin-top: 0;                         /* the entry's padding does the spacing */
 }
@@ -534,6 +583,10 @@ section h3 {
     margin: 0;
     padding-top: calc(var(--space) * 2);   /* level with the card title */
     text-align: right;
+  }
+
+  .timeline-date .badge {
+    margin-left: auto;                   /* the dates are right-aligned, so the badge is too */
   }
 }
 
@@ -838,4 +891,38 @@ footer {
   html {
     scroll-behavior: smooth;
   }
+}
+/* C# snippet in the hero (decorative; the real tagline is the text above) */
+.code-snippet {
+  margin: calc(var(--space) * 2) 0 calc(var(--space) * 3);
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: left;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
+  border: 1px solid var(--color-chip-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+}
+.code-snippet .kw { color: var(--code-keyword); }
+.code-snippet .ty { color: var(--code-type); }
+.code-snippet .st { color: var(--code-string); }
+
+/* Card text: room between paragraphs, a badge that starts at the card's left edge */
+.card p + p {
+  margin-top: var(--space);
+}
+.card p.interests-label {
+  margin-top: calc(var(--space) * 1.5);
+  margin-bottom: var(--space);
+}
+.entry-meta .badge:first-child {
+  margin-left: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { transition: none; }
 }
