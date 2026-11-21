@@ -94,8 +94,43 @@ let ticking = false;
 
 function updateDots() {
   root.style.setProperty("--dots-y", String((window.scrollY * 0.3) % 24));
+  updateSymbols();
   ticking = false;
 }
+
+// 4. Floating code symbols. Each one has a column (x, in %), a start height (y, in %),
+// a size (rem) and a speed. Higher speed = moves faster = looks closer.
+const symbolData = [
+  ["{ }", 6, 10, 2.2, 0.20], ["</>", 22, 70, 1.6, 0.12], [";", 38, 30, 2.4, 0.28],
+  ["//", 52, 85, 1.8, 0.16], ["=>", 66, 20, 1.6, 0.24], ["#", 80, 55, 2.0, 0.14],
+  ["[ ]", 92, 90, 1.8, 0.22], ["()", 14, 45, 1.4, 0.30], ["var", 30, 5, 1.4, 0.10],
+  ["new", 46, 60, 1.4, 0.18], ["int", 60, 40, 1.6, 0.26], ["< >", 74, 8, 1.8, 0.13],
+  ["!=", 86, 35, 1.4, 0.21], ["::", 96, 62, 1.6, 0.17]
+];
+const symbolLayer = document.createElement("div");
+symbolLayer.className = "code-bg";
+symbolLayer.setAttribute("aria-hidden", "true");   // decoration only
+const symbols = symbolData.map(([text, x, y, size, speed]) => {
+  const el = document.createElement("span");
+  el.textContent = text;
+  el.style.left = x + "%";
+  el.style.fontSize = size + "rem";
+  symbolLayer.appendChild(el);
+  return { el, y, speed };
+});
+document.body.prepend(symbolLayer);
+
+function updateSymbols() {
+  const loop = window.innerHeight + 120;      // a symbol that leaves the top re-enters at the bottom
+  symbols.forEach(sym => {
+    const start = (sym.y / 100) * window.innerHeight;
+    const moved = reduceMotion.matches ? 0 : window.scrollY * sym.speed;
+    const y = (((start - moved) % loop) + loop) % loop - 60;   // % can be negative in JS, so wrap twice
+    sym.el.style.transform = "translate3d(0," + y.toFixed(1) + "px,0)";
+  });
+}
+updateSymbols();
+window.addEventListener("resize", updateSymbols);
 
 window.addEventListener("scroll", () => {
   if (reduceMotion.matches || ticking) return;

@@ -129,6 +129,29 @@ body::after {
 :root[data-section="projects"] body::after { --glow-tint: var(--glow-blue); }
 :root[data-section="contact"] body::after { --glow-tint: var(--code-string); }
 
+/* Floating code symbols (created by script.js): faint glyphs that drift upward at different speeds */
+.code-bg {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
+}
+
+.code-bg span {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  left: 0;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  will-change: transform;                      /* the browser moves it on the GPU: cheap */
+}
+
+@media (max-width: 600px) {
+  .code-bg span:nth-child(n + 9) { display: none; }   /* fewer symbols on phones */
+}
+
 h1,
 h2,
 h3 {
