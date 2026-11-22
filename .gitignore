@@ -10,3 +10,6 @@ desktop.ini
 # Dependencies and build output (if you add tools later)
 node_modules/
 dist/
+
+# Local scratch files
+index1.html

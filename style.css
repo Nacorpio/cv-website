@@ -204,9 +204,9 @@ nav {
 }
 
 .nav-list {
-  display: grid;                         /* phone: 3 + 2 slices in even rows (see the 768px query) */
+  display: grid;                         /* phone: 3 + 3 slices in even rows (see the 768px query) */
   flex: 1;                               /* the slices take the free space */
-  grid-template-columns: repeat(6, 1fr); /* 6 columns: the top row uses 2 each, the bottom row 3 each */
+  grid-template-columns: repeat(3, 1fr); /* 3 columns: two rows of three slices */
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -214,12 +214,10 @@ nav {
 
 .nav-list li {
   border-left: 1px solid var(--color-border);
-  grid-column: span 2;                   /* phone: three slices in the top row */
 }
 
 .nav-list li:nth-child(n + 4) {
-  border-top: 1px solid var(--color-border);
-  grid-column: span 3;                   /* phone: two wider slices in the bottom row */
+  border-top: 1px solid var(--color-border);   /* phone: the second row of three */
 }
 
 .nav-list li:nth-child(3),
@@ -877,7 +875,7 @@ footer {
     padding: calc(var(--space) * 4);   /* larger screens: roomier */
   }
 
-  /* Wide screens: one row of five slices that share the width */
+  /* Wide screens: one row of six slices that share the width */
   .nav-list {
     display: flex;
   }
